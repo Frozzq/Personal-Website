@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Website</title>
+    <link rel="stylesheet" href="style6.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Review Website</h1>
+        <form id="reviewForm">
+            <label for="name">Nama :</label>
+            <input type="text" id="name" name="name" required pattern="[A-Za-z]+" title="Hanya huruf saja yang diperbolehkan">
+
+            <label for="email">Email :</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Nomor Telepon :</label>
+            <input type="tel" id="phone" name="phone" required pattern="[0-9]+" title="Hanya angka saja yang diperbolehkan">
+
+            <label for="comment">Saran & Komentar :</label>
+            <textarea id="comment" name="comment" rows="4" required></textarea>
+
+            <label for="rating">Rating :</label>
+            <input type="range" id="rating" name="rating" min="1" max="5" value="3">
+            <div class="rating-labels">
+                <span class="rating-text">Sangat Buruk</span>
+                <span class="rating-text">Buruk</span>
+                <span class="rating-text">Cukup</span>
+                <span class="rating-text">Baik</span>
+                <span class="rating-text">Sangat Baik</span>
+            </div>
+
+            <button type="button" onclick="submitReview()">Submit</button>
+        </form>
+        <div id="nameError" class="input-error"></div>
+        <div id="emailError" class="input-error"></div>
+        <div id="phoneError" class="input-error"></div>
+    </div>
+
+    <script>
+        const ratingInput = document.getElementById('rating');
+        const ratingLabels = document.querySelectorAll('.rating-text');
+
+        ratingInput.addEventListener('input', () => {
+            const value = ratingInput.value;
+            ratingLabels.forEach((label, index) => {
+                if (index + 1 == value) {
+                    label.classList.add('show');
+                } else {
+                    label.classList.remove('show');
+                }
+            });
+        });
+        
+        function submitReview() {
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const phoneInput = document.getElementById('phone');
+
+            const namePattern = /[A-Za-z]+/;
+            const phonePattern = /[0-9]+/;
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            let isValidName = namePattern.test(nameInput.value);
+            let isValidEmail = emailPattern.test(emailInput.value);
+            let isValidPhone = phonePattern.test(phoneInput.value);
+
+            if (!isValidName && !isValidEmail && !isValidPhone) {
+                nameInput.style.borderColor = 'red';
+                emailInput.style.borderColor = 'red';
+                phoneInput.style.borderColor = 'red';
+                alert('Input nama, email, dan nomor telepon tidak valid, dimohon input kembali.');
+                return;
+            }
+
+            if (!isValidName) {
+                nameInput.style.borderColor = 'red';
+                alert('Input nama tidak valid, dimohon input kembali.');
+                return;
+            } else {
+                nameInput.style.borderColor = ''; 
+            }
+
+            if (!isValidEmail) {
+                emailInput.style.borderColor = 'red';
+                alert('Input email tidak valid, dimohon input kembali.');
+                return;
+            } else {
+                emailInput.style.borderColor = ''; 
+            }
+
+            if (!isValidPhone) {
+                phoneInput.style.borderColor = 'red';
+                alert('Input nomor telepon tidak valid, dimohon input kembali.');
+                return;
+            } else {
+                phoneInput.style.borderColor = '';
+            }
+
+            alert('Review berhasil dikirim!');
+
+            document.getElementById('reviewForm').reset();
+        }
+    </script>
+</body>
+</html>
